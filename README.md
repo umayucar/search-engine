@@ -209,11 +209,11 @@ Dashboard'daki "Sync Data" butonunu kullanın.
 
 ### FAQ
 
-**Q: Yeni provider nasıl eklerim?**
-A: `AbstractProvider` sınıfını extend edin ve `parseData()` ile `mapToStandardFormat()` metodlarını implement edin.
+**Yeni provider nasıl eklerim?**
+`AbstractProvider` sınıfını extend edin ve `parseData()` ile `mapToStandardFormat()` metodlarını implement edin.
 
-**Q: Scoring algoritmasını nasıl değiştirebilirim?**
-A: `Content` modelindeki `calculateScore()` metodunu override edin.
+**Scoring algoritmasını nasıl değiştirebilirim?**
+`Content` modelindeki `calculateScore()` metodunu override edin.
 
-**Q: Frontend'i nasıl özelleştirebilirim?**
-A: `resources/js/Components/` dizinindeki React bileşenlerini düzenleyin.
+**Frontend'i nasıl özelleştirebilirim?**
+`resources/js/Components/` dizinindeki React bileşenlerini düzenleyin.
