@@ -106,7 +106,7 @@ GET /api/search
 | `sort` | enum | `relevance` | `relevance`, `date`, `popularity` |
 | `order` | enum | `desc` | `asc` veya `desc` |
 | `page` | integer | 1 | Sayfa numarası |
-| `per_page` | integer | 10 | Sayfa başına öğe (max: 100) |
+| `per_page` | integer | 10 | Sayfa başına öğe (max: 20) |
 
 **Örnek İstek:**
 ```bash
