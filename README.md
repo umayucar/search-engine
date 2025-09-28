@@ -198,40 +198,6 @@ Dashboard'daki "Sync Data" butonunu kullanın.
 0 */6 * * * cd /path/to/project && php artisan content:sync
 ```
 
-
-## 🧪 Test ve Kalite Kontrol
-
-### Backend Testleri
-```bash
-# Unit testleri
-php artisan test
-
-# Specific test
-php artisan test --filter=ContentSyncTest
-
-# Coverage report
-php artisan test --coverage
-```
-
-### Frontend Testleri
-```bash
-# TypeScript kontrol
-npx tsc --noEmit
-
-# Build test
-npm run build
-
-# Lint kontrol
-npm run lint
-```
-
-### API Testleri
-```bash
-curl -X GET "http://localhost:8000/api/search?query=test"
-curl -X POST "http://localhost:8000/api/sync"
-curl -X GET "http://localhost:8000/api/search/stats"
-```
-
 ## 📚 Ek Kaynaklar
 
 ### Dokümantasyon
