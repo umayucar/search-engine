@@ -9,54 +9,50 @@ use Illuminate\Support\Facades\Cache;
 
 class SearchController extends Controller
 {
+    private const CACHE_MINUTES = 10;
+    private const STATS_CACHE_MINUTES = 30;
+
     /**
      * Search for content with filters and pagination
      */
     public function search(SearchRequest $request)
     {
-        $query = $request->input('query');
-        $type = $request->input('type');
-        $sort = $request->input('sort', 'relevance');
-        $order = $request->input('order', 'desc');
-        $perPage = $request->input('per_page', 10);
+        $validatedData = $request->validated();
+        $params = array_merge([
+            'sort' => 'relevance',
+            'order' => 'desc',
+            'per_page' => 10,
+            'page' => 1,
+        ], $validatedData);
 
-        // Create cache key based on search parameters
-        $cacheKey = 'search:' . md5(serialize([
-            'query' => $query,
-            'type' => $type,
-            'sort' => $sort,
-            'order' => $order,
-            'page' => $request->input('page', 1),
-            'per_page' => $perPage
-        ]));
+        $cacheKey = 'search:' . md5(http_build_query($params));
 
-        // Try to get results from cache
-        $results = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($query, $type, $sort, $order, $perPage) {
+        $results = Cache::remember($cacheKey, now()->addMinutes(self::CACHE_MINUTES), function () use ($params) {
             $builder = Content::query();
 
-            if ($query) {
-                $builder->search($query);
+            if ($params['query'] ?? null) {
+                $builder->search($params['query']);
             }
 
-            if ($type) {
-                $builder->ofType($type);
+            if ($params['type'] ?? null) {
+                $builder->ofType($params['type']);
             }
 
-            switch ($sort) {
+            switch ($params['sort']) {
                 case 'relevance':
-                    $builder->orderByRelevance($order);
+                    $builder->orderByRelevance($params['order']);
                     break;
                 case 'date':
-                    $builder->orderBy('published_at', $order);
+                    $builder->orderBy('published_at', $params['order']);
                     break;
                 case 'popularity':
-                    $builder->orderBy('score', $order);
+                    $builder->orderBy('score', $params['order']);
                     break;
                 default:
-                    $builder->orderByRelevance($order);
+                    $builder->orderByRelevance($params['order']);
             }
 
-            return $builder->paginate($perPage);
+            return $builder->paginate($params['per_page']);
         });
 
         return response()->json([
@@ -73,12 +69,7 @@ class SearchController extends Controller
                 'from' => $results->firstItem(),
                 'to' => $results->lastItem(),
             ],
-            'filters' => [
-                'query' => $query,
-                'type' => $type,
-                'sort' => $sort,
-                'order' => $order
-            ]
+            'filters' => $params,
         ]);
     }
 
@@ -87,14 +78,8 @@ class SearchController extends Controller
      */
     public function stats()
     {
-        $stats = Cache::remember('content_stats', now()->addMinutes(30), function () {
-            return [
-                'total_contents' => Content::count(),
-                'total_videos' => Content::where('type', 'video')->count(),
-                'total_articles' => Content::where('type', 'article')->count(),
-                'avg_score' => (float) Content::avg('score'),
-                'last_updated' => Content::latest('updated_at')->first()?->updated_at,
-            ];
+        $stats = Cache::remember('content_stats', now()->addMinutes(self::STATS_CACHE_MINUTES), function () {
+            return Content::getContentStats();
         });
 
         return response()->json([

@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchRequest;
 use App\Models\Content;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class SearchController extends Controller
 {
-    public function index(Request $request)
+    private const CACHE_MINUTES = 30;
+
+    public function index(SearchRequest $request)
     {
         $query = $request->input('query');
         $type = $request->input('type');
@@ -44,14 +46,8 @@ class SearchController extends Controller
         $results = $builder->paginate($perPage);
 
         // Get content statistics
-        $stats = Cache::remember('content_stats', now()->addMinutes(30), function () {
-            return [
-                'total_contents' => Content::count(),
-                'total_videos' => Content::where('type', 'video')->count(),
-                'total_articles' => Content::where('type', 'article')->count(),
-                'avg_score' => (float) Content::avg('score'),
-                'last_updated' => Content::latest('updated_at')->first()?->updated_at,
-            ];
+        $stats = Cache::remember('content_stats', now()->addMinutes(self::CACHE_MINUTES), function () {
+            return Content::getContentStats();
         });
 
         return Inertia::render('Search', [

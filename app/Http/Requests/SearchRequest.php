@@ -27,24 +27,7 @@ class SearchRequest extends FormRequest
             'sort' => 'nullable|in:relevance,date,popularity',
             'order' => 'nullable|in:asc,desc',
             'page' => 'nullable|integer|min:1',
-            'per_page' => 'nullable|integer|min:1|max:100'
-        ];
-    }
-
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    public function attributes(): array
-    {
-        return [
-            'query' => 'arama sorgusu',
-            'type' => 'içerik tipi',
-            'sort' => 'sıralama kriteri',
-            'order' => 'sıralama düzeni',
-            'page' => 'sayfa',
-            'per_page' => 'sayfa başına içerik'
+            'per_page' => 'nullable|integer|min:1|max:20'
         ];
     }
 }

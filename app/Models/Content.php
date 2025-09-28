@@ -137,4 +137,18 @@ class Content extends Model
         return $query->orderBy('score', $direction)
             ->orderBy('published_at', 'desc');
     }
+
+    /**
+     * Get content stats 
+     */
+    public function getContentStats(): array
+    {
+        return [
+            'total_contents' => self::count(),
+            'total_videos' => self::where('type', 'video')->count(),
+            'total_articles' => self::where('type', 'article')->count(),
+            'avg_score' => (float) self::avg('score'),
+            'last_updated' => self::latest('updated_at')->first()?->updated_at,
+        ];
+    }
 }
