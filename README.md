@@ -4,7 +4,8 @@ Bu proje, farklı içerik sağlayıcılardan (JSON ve XML) gelen verileri birle�
 
 ## 📸 Önizleme
 
-![Dashboard Preview](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Search+Engine+Dashboard)
+<img width="1079" height="761" alt="search" src="https://github.com/user-attachments/assets/d7bc55b5-51fc-4f03-9325-21d9abd8d4a2" />
+
 
 ## 🏗️ Teknoloji Stack
 
@@ -251,5 +252,3 @@ A: `Content` modelindeki `calculateScore()` metodunu override edin.
 
 **Q: Frontend'i nasıl özelleştirebilirim?**
 A: `resources/js/Components/` dizinindeki React bileşenlerini düzenleyin.
-
----
