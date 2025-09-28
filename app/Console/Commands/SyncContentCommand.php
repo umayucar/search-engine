@@ -27,12 +27,12 @@ class SyncContentCommand extends Command
     public function handle(ContentSyncService $syncService)
     {
         $this->info('Starting content synchronization...');
-        
+
         $result = $syncService->syncAllProviders();
-        
+
         if ($result['success']) {
-            $this->info("✅ Successfully synced {$result['total_synced']} items from all providers");
-            
+            $this->info("Successfully synced {$result['total_synced']} items from all providers");
+
             foreach ($result['provider_results'] as $providerResult) {
                 if ($providerResult['success']) {
                     $this->line("   - {$providerResult['provider']}: {$providerResult['synced_count']} items");
@@ -41,15 +41,15 @@ class SyncContentCommand extends Command
                 }
             }
         } else {
-            $this->error('❌ Sync completed with errors:');
+            $this->error('Sync completed with errors:');
             foreach ($result['errors'] as $error) {
                 $this->error("   - {$error}");
             }
         }
-        
+
         // Store sync status
         $syncService->storeLastSyncStatus($result);
-        
+
         return $result['success'] ? 0 : 1;
     }
 }
