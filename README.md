@@ -6,6 +6,18 @@ Bu proje, farklı içerik sağlayıcılardan (JSON ve XML) gelen verileri birle�
 
 <img width="1079" height="761" alt="search" src="https://github.com/user-attachments/assets/d7bc55b5-51fc-4f03-9325-21d9abd8d4a2" />
 
+## 🎯 Dashboard Kullanımı
+
+### Ana Özellikler
+- **📊 İstatistik Paneli**: Toplam içerik, video/makale dağılımı, ortalama skor
+- **📱 Responsive Kartlar**: Zengin metadata ile görsel içerik sunumu
+- **⚡ Sync Butonu**: Provider verilerini anında güncelleme
+
+### Arama İpuçları
+- **Genel Arama**: `programming`, `docker`, `kubernetes`
+- **Spesifik Arama**: `"Go Programming"` 
+- **Tag Arama**: Etiketler otomatik olarak aranır
+- **Kombinasyon**: Tür + arama + sıralama kombinasyonları
 
 ## 🏗️ Teknoloji Stack
 
@@ -164,19 +176,6 @@ Etkileşim Puanı = (450 / 8) × 5 = 281.25
 
 Final Skor = (17 × 1.0) + 3 + 281.25 = 301.25
 ```
-
-## 🎯 Dashboard Kullanım Rehberi
-
-### Ana Özellikler
-- **📊 İstatistik Paneli**: Toplam içerik, video/makale dağılımı, ortalama skor
-- **📱 Responsive Kartlar**: Zengin metadata ile görsel içerik sunumu
-- **⚡ Sync Butonu**: Provider verilerini anında güncelleme
-
-### Arama İpuçları
-- **Genel Arama**: `programming`, `docker`, `kubernetes`
-- **Spesifik Arama**: `"Go Programming"` 
-- **Tag Arama**: Etiketler otomatik olarak aranır
-- **Kombinasyon**: Tür + arama + sıralama kombinasyonları
 
 ### Veri Senkronizasyon Yöntemleri
 
