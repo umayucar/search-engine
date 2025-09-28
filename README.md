@@ -4,7 +4,20 @@ Bu proje, farklı içerik sağlayıcılardan (JSON ve XML) gelen verileri birle�
 
 ## 📸 Önizleme
 
-![Dashboard Preview](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Search+Engine+Dashboard)
+<img width="1079" height="761" alt="search" src="https://github.com/user-attachments/assets/d7bc55b5-51fc-4f03-9325-21d9abd8d4a2" />
+
+## 🎯 Dashboard Kullanımı
+
+### Ana Özellikler
+- **📊 İstatistik Paneli**: Toplam içerik, video/makale dağılımı, ortalama skor
+- **📱 Responsive Kartlar**: Zengin metadata ile görsel içerik sunumu
+- **⚡ Sync Butonu**: Provider verilerini anında güncelleme
+
+### Arama İpuçları
+- **Genel Arama**: `programming`, `docker`, `kubernetes`
+- **Spesifik Arama**: `"Go Programming"` 
+- **Tag Arama**: Etiketler otomatik olarak aranır
+- **Kombinasyon**: Tür + arama + sıralama kombinasyonları
 
 ## 🏗️ Teknoloji Stack
 
@@ -164,19 +177,6 @@ Etkileşim Puanı = (450 / 8) × 5 = 281.25
 Final Skor = (17 × 1.0) + 3 + 281.25 = 301.25
 ```
 
-## 🎯 Dashboard Kullanım Rehberi
-
-### Ana Özellikler
-- **📊 İstatistik Paneli**: Toplam içerik, video/makale dağılımı, ortalama skor
-- **📱 Responsive Kartlar**: Zengin metadata ile görsel içerik sunumu
-- **⚡ Sync Butonu**: Provider verilerini anında güncelleme
-
-### Arama İpuçları
-- **Genel Arama**: `programming`, `docker`, `kubernetes`
-- **Spesifik Arama**: `"Go Programming"` 
-- **Tag Arama**: Etiketler otomatik olarak aranır
-- **Kombinasyon**: Tür + arama + sıralama kombinasyonları
-
 ### Veri Senkronizasyon Yöntemleri
 
 #### Manuel Komut
@@ -198,40 +198,6 @@ Dashboard'daki "Sync Data" butonunu kullanın.
 0 */6 * * * cd /path/to/project && php artisan content:sync
 ```
 
-
-## 🧪 Test ve Kalite Kontrol
-
-### Backend Testleri
-```bash
-# Unit testleri
-php artisan test
-
-# Specific test
-php artisan test --filter=ContentSyncTest
-
-# Coverage report
-php artisan test --coverage
-```
-
-### Frontend Testleri
-```bash
-# TypeScript kontrol
-npx tsc --noEmit
-
-# Build test
-npm run build
-
-# Lint kontrol
-npm run lint
-```
-
-### API Testleri
-```bash
-curl -X GET "http://localhost:8000/api/search?query=test"
-curl -X POST "http://localhost:8000/api/sync"
-curl -X GET "http://localhost:8000/api/search/stats"
-```
-
 ## 📚 Ek Kaynaklar
 
 ### Dokümantasyon
@@ -243,13 +209,11 @@ curl -X GET "http://localhost:8000/api/search/stats"
 
 ### FAQ
 
-**Q: Yeni provider nasıl eklerim?**
-A: `AbstractProvider` sınıfını extend edin ve `parseData()` ile `mapToStandardFormat()` metodlarını implement edin.
+**Yeni provider nasıl eklerim?**
+`AbstractProvider` sınıfını extend edin ve `parseData()` ile `mapToStandardFormat()` metodlarını implement edin.
 
-**Q: Scoring algoritmasını nasıl değiştirebilirim?**
-A: `Content` modelindeki `calculateScore()` metodunu override edin.
+**Scoring algoritmasını nasıl değiştirebilirim?**
+`Content` modelindeki `calculateScore()` metodunu override edin.
 
-**Q: Frontend'i nasıl özelleştirebilirim?**
-A: `resources/js/Components/` dizinindeki React bileşenlerini düzenleyin.
-
----
+**Frontend'i nasıl özelleştirebilirim?**
+`resources/js/Components/` dizinindeki React bileşenlerini düzenleyin.
