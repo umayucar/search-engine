@@ -1,0 +1,255 @@
+# Search Engine API
+
+Bu proje, farklı içerik sağlayıcılardan (JSON ve XML) gelen verileri birleştirerek, kullanıcının arama sorgusuna göre en uygun içerikleri bulan, bunları gelişmiş puanlama algoritmasıyla sıralayan ve modern bir dashboard arayüzü ile sunan tam özellikli bir arama motoru API'sidir.
+
+## 📸 Önizleme
+
+![Dashboard Preview](https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Search+Engine+Dashboard)
+
+## 🏗️ Teknoloji Stack
+
+| Kategori | Teknoloji | Versiyon |
+|----------|-----------|----------|
+| **Backend** | Laravel | 12.x |
+| **Frontend** | React + TypeScript | 18.x |
+| **Database** | Mysql | - |
+| **Styling** | Tailwind CSS | 4.x |
+| **Build Tool** | Vite | 7.x |
+| **API Bridge** | Inertia.js | 2.x |
+
+## 🚀 Hızlı Başlangıç
+
+### Sistem Gereksinimleri
+```bash
+PHP >= 8.2
+Node.js >= 18.0
+Composer >= 2.0
+Git
+```
+
+### ⚡ Tek Komutla Kurulum
+```bash
+# Repository'yi klonla ve kur
+git clone https://github.com/umayucar/search-engine.git
+cd search-engine
+chmod +x setup.sh && ./setup.sh
+```
+
+### 📋 Manuel Kurulum
+
+#### 1. Projeyi İndirin
+```bash
+git clone https://github.com/umayucar/search-engine.git
+cd search-engine
+```
+
+#### 2. Backend Kurulumu
+```bash
+# Composer bağımlılıkları
+composer install
+
+# Environment dosyası
+cp .env.example .env
+php artisan key:generate
+
+# Veritabanı kurulumu
+php artisan migrate
+
+# İlk veri yüklemesi
+php artisan content:sync
+```
+
+#### 3. Frontend Kurulumu
+```bash
+# NPM bağımlılıkları
+npm install
+
+# Development build
+npm run dev
+
+#### 4. Uygulamayı Başlatın
+```bash
+# Backend server
+php artisan serve
+
+# Frontend dev server (ayrı terminal)
+npm run dev
+```
+
+🎉 **Tebrikler!** Uygulamanız http://localhost:8000 adresinde çalışıyor.
+
+## 🔧 API Dokümantasyonu
+
+### 🔍 Arama Endpoint'i
+```http
+GET /api/search
+```
+
+**Query Parameters:**
+| Parametre | Tip | Varsayılan | Açıklama |
+|-----------|-----|------------|----------|
+| `query` | string | - | Arama terimi |
+| `type` | enum | - | `video` veya `article` |
+| `sort` | enum | `relevance` | `relevance`, `date`, `popularity` |
+| `order` | enum | `desc` | `asc` veya `desc` |
+| `page` | integer | 1 | Sayfa numarası |
+| `per_page` | integer | 10 | Sayfa başına öğe (max: 100) |
+
+**Örnek İstek:**
+```bash
+curl "http://localhost:8000/api/search?query=programming&type=video&sort=popularity&page=1"
+```
+
+**Örnek Yanıt:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "title": "Advanced Go Concurrency Patterns",
+      "type": "video",
+      "score": 74.84,
+      "views": 25000,
+      "likes": 2100,
+      "tags": ["programming", "advanced", "concurrency"],
+      "published_at": "2024-03-14T15:30:00.000000Z"
+    }
+  ],
+  "pagination": {
+    "current_page": 1,
+    "last_page": 3,
+    "total": 42
+  }
+}
+```
+
+### 📊 İstatistik Endpoint'i
+```http
+GET /api/search/stats
+```
+
+### 🔄 Senkronizasyon Endpoint'leri
+```http
+POST /api/sync           # Manuel senkronizasyon
+GET /api/sync/status     # Senkronizasyon durumu
+```
+
+## 🧮 Puanlama Algoritması Detayları
+
+### Formül
+```
+Final Skor = (Temel Puan × İçerik Katsayısı) + Güncellik Puanı + Etkileşim Puanı
+```
+
+### Hesaplama Örnekleri
+
+#### Video İçerik
+```
+Temel Puan = (25000 views / 1000) + (2100 likes / 100) = 25 + 21 = 46
+İçerik Katsayısı = 1.5 (video için)
+Güncellik Puanı = 3 (1 ay içinde)
+Etkileşim Puanı = (2100 / 25000) × 10 = 0.84
+
+Final Skor = (46 × 1.5) + 3 + 0.84 = 72.84
+```
+
+#### Makale İçerik
+```
+Temel Puan = 8 reading_time + (450 reactions / 50) = 8 + 9 = 17
+İçerik Katsayısı = 1.0 (makale için)
+Güncellik Puanı = 3 (1 ay içinde)
+Etkileşim Puanı = (450 / 8) × 5 = 281.25
+
+Final Skor = (17 × 1.0) + 3 + 281.25 = 301.25
+```
+
+## 🎯 Dashboard Kullanım Rehberi
+
+### Ana Özellikler
+- **📊 İstatistik Paneli**: Toplam içerik, video/makale dağılımı, ortalama skor
+- **📱 Responsive Kartlar**: Zengin metadata ile görsel içerik sunumu
+- **⚡ Sync Butonu**: Provider verilerini anında güncelleme
+
+### Arama İpuçları
+- **Genel Arama**: `programming`, `docker`, `kubernetes`
+- **Spesifik Arama**: `"Go Programming"` 
+- **Tag Arama**: Etiketler otomatik olarak aranır
+- **Kombinasyon**: Tür + arama + sıralama kombinasyonları
+
+### Veri Senkronizasyon Yöntemleri
+
+#### Manuel Komut
+```bash
+php artisan content:sync
+```
+
+#### API Üzerinden
+```bash
+curl -X POST http://localhost:8000/api/sync
+```
+
+#### Dashboard Üzerinden
+Dashboard'daki "Sync Data" butonunu kullanın.
+
+#### Otomatik Senkronizasyon (Cron)
+```bash
+# crontab -e
+0 */6 * * * cd /path/to/project && php artisan content:sync
+```
+
+
+## 🧪 Test ve Kalite Kontrol
+
+### Backend Testleri
+```bash
+# Unit testleri
+php artisan test
+
+# Specific test
+php artisan test --filter=ContentSyncTest
+
+# Coverage report
+php artisan test --coverage
+```
+
+### Frontend Testleri
+```bash
+# TypeScript kontrol
+npx tsc --noEmit
+
+# Build test
+npm run build
+
+# Lint kontrol
+npm run lint
+```
+
+### API Testleri
+```bash
+curl -X GET "http://localhost:8000/api/search?query=test"
+curl -X POST "http://localhost:8000/api/sync"
+curl -X GET "http://localhost:8000/api/search/stats"
+```
+
+## 📚 Ek Kaynaklar
+
+### Dokümantasyon
+- [Laravel Documentation](https://laravel.com/docs)
+- [React TypeScript Guide](https://react-typescript-cheatsheet.netlify.app/)
+- [Tailwind CSS Reference](https://tailwindcss.com/docs)
+- [Inertia.js Guide](https://inertiajs.com/)
+
+
+### FAQ
+
+**Q: Yeni provider nasıl eklerim?**
+A: `AbstractProvider` sınıfını extend edin ve `parseData()` ile `mapToStandardFormat()` metodlarını implement edin.
+
+**Q: Scoring algoritmasını nasıl değiştirebilirim?**
+A: `Content` modelindeki `calculateScore()` metodunu override edin.
+
+**Q: Frontend'i nasıl özelleştirebilirim?**
+A: `resources/js/Components/` dizinindeki React bileşenlerini düzenleyin.
+
+---
